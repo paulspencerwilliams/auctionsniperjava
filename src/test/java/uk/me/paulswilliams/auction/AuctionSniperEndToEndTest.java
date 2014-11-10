@@ -3,7 +3,7 @@ package uk.me.paulswilliams.auction;
 import org.junit.After;
 import org.junit.Test;
 import uk.me.paulswilliams.auction.fakes.FakeAuctionServer;
-import uk.me.paulswilliams.auction.helpers.ApplicationRunner;
+import uk.me.paulswilliams.auction.drivers.ApplicationRunner;
 
 public class AuctionSniperEndToEndTest {
     private final FakeAuctionServer auction = new FakeAuctionServer("item-54321");
@@ -24,7 +24,5 @@ public class AuctionSniperEndToEndTest {
     }
 
     @After
-    public void stopApplication() {
-
-    }
+    public void stopApplication() { application.stop(); }
 }
