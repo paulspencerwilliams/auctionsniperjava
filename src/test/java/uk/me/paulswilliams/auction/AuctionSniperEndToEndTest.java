@@ -1,5 +1,6 @@
 package uk.me.paulswilliams.auction;
 
+import org.jivesoftware.smack.XMPPException;
 import org.junit.After;
 import org.junit.Test;
 import uk.me.paulswilliams.auction.fakes.FakeAuctionServer;
@@ -10,7 +11,7 @@ public class AuctionSniperEndToEndTest {
     private final ApplicationRunner application = new ApplicationRunner();
 
     @Test
-    public void sniperJoinsAuctionUntilAuctionCloses() {
+    public void sniperJoinsAuctionUntilAuctionCloses() throws Exception {
         auction.startSellingItem();
         application.startBiddingIn(auction);
         auction.hasReceivedJoinRequestFromSniper();
