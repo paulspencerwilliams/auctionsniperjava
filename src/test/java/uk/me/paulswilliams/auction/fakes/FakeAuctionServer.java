@@ -2,51 +2,84 @@ package uk.me.paulswilliams.auction.fakes;
 
 import org.jivesoftware.smack.*;
 import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.parsing.ExceptionLoggingCallback;
+import org.jivesoftware.smack.tcp.XMPPTCPConnection;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import javax.security.sasl.SaslException;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 
 import static java.lang.String.format;
 
 public class FakeAuctionServer {
-    public static final String XMPP_HOSTNAME = "localhost";
-    private static final String ITEM_ID_AS_LOGIN = "auction-%s";
-    private static final String AUCTION_PASSWORD = "auction";
-    private static final String AUCTION_RESOURCE = "Auction";
-    private final XMPPConnection connection;
-    private String itemId;
-    private Chat currentChat;
-    private final SingleMessageListener messageListener = new SingleMessageListener();
+	public static final String XMPP_HOSTNAME = "localhost";
 
-    public FakeAuctionServer(String itemId) {
-        this.itemId = itemId;
-        this.connection = new XMPPConnection(XMPP_HOSTNAME);
-    }
+	private static final String ITEM_ID_AS_LOGIN = "arthur";
 
-    public void startSellingItem() throws XMPPException {
-        connection.connect();
-        connection.login(format(ITEM_ID_AS_LOGIN, itemId), AUCTION_PASSWORD, AUCTION_RESOURCE);
-        connection.getChatManager().addChatListener(
-                new ChatManagerListener() {
-                    @Override
-                    public void chatCreated(Chat chat, boolean createdLocally) {
-                        currentChat = chat;
-                        chat.addMessageListener(messageListener);
-                    }
-                }
-        );
-    }
+	private static final String AUCTION_PASSWORD = "secr3t";
 
-    public void hasReceivedJoinRequestFromSniper() throws InterruptedException {
-        messageListener.receivesAMessage();
-    }
+	private static final String AUCTION_RESOURCE = "Auction";
 
-    public void announceClosed() throws XMPPException {
-        currentChat.sendMessage(new Message());
-    }
+	private XMPPConnection connection;
 
-    public void stop() {
-        connection.disconnect();
-    }
+	private String itemId;
 
-    public String getItemId() {
-        return itemId;
-    }
+	private Chat currentChat;
+
+	private final SingleMessageListener messageListener = new SingleMessageListener();
+
+	public FakeAuctionServer(String itemId) {
+		this.itemId = itemId;
+
+        try {
+			ConnectionConfiguration connectionConfig = new ConnectionConfiguration(XMPP_HOSTNAME, 5222);
+			connectionConfig.setSecurityMode(ConnectionConfiguration.SecurityMode.required);
+
+			System.setProperty("javax.net.ssl.trustStore", "akeystore.jks");
+            this.connection = new XMPPTCPConnection(connectionConfig);
+            this.connection.connect();
+            this.connection.login(format(ITEM_ID_AS_LOGIN, itemId), AUCTION_PASSWORD, AUCTION_RESOURCE);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("connection failed");
+        }
+
+	}
+
+	public void startSellingItem() throws XMPPException, IOException, SmackException {
+
+		// connection.getChatManager().addChatListener(
+		// new ChatManagerListener() {
+		// @Override
+		// public void chatCreated(Chat chat, boolean createdLocally) {
+		// currentChat = chat;
+		// chat.addMessageListener(messageListener);
+		// }
+		// }
+		// );
+	}
+
+	public void hasReceivedJoinRequestFromSniper() throws InterruptedException {
+		messageListener.receivesAMessage();
+	}
+
+	public void announceClosed() throws XMPPException {
+		// currentChat.sendMessage(new Message());
+	}
+
+	public void stop() {
+		// connection.disconnect();
+	}
+
+	public String getItemId() {
+		return itemId;
+	}
 }
