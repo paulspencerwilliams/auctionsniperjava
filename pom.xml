@@ -35,5 +35,10 @@
             <version>4.0.5</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.missing.group</groupId>
+            <artifactId>theartifact</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 </project>

@@ -1,5 +1,6 @@
 package uk.me.paulswilliams.auction.fakes;
 
+import eu.geekplace.javapinning.JavaPinning;
 import org.jivesoftware.smack.*;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.parsing.ExceptionLoggingCallback;
@@ -42,7 +43,10 @@ public class FakeAuctionServer {
 			ConnectionConfiguration connectionConfig = new ConnectionConfiguration(XMPP_HOSTNAME, 5222);
 			connectionConfig.setSecurityMode(ConnectionConfiguration.SecurityMode.required);
 
-			System.setProperty("javax.net.ssl.trustStore", "akeystore.jks");
+			System.setProperty("javax.net.debug", "all");
+
+			connectionConfig.setCustomSSLContext(JavaPinning.forPin("SHA256:FB34EB36E2D51A95471700CC47"));
+
             this.connection = new XMPPTCPConnection(connectionConfig);
             this.connection.connect();
             this.connection.login(format(ITEM_ID_AS_LOGIN, itemId), AUCTION_PASSWORD, AUCTION_RESOURCE);
