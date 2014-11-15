@@ -1,20 +1,10 @@
 package uk.me.paulswilliams.auction.fakes;
 
+import java.io.IOException;
+
 import org.jivesoftware.smack.*;
 import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.parsing.ExceptionLoggingCallback;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import javax.security.sasl.SaslException;
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 
 import static java.lang.String.format;
 
@@ -37,49 +27,39 @@ public class FakeAuctionServer {
 
 	public FakeAuctionServer(String itemId) {
 		this.itemId = itemId;
-
-        try {
-			ConnectionConfiguration connectionConfig = new ConnectionConfiguration(XMPP_HOSTNAME, 5222);
-			connectionConfig.setSecurityMode(ConnectionConfiguration.SecurityMode.required);
-
-			System.setProperty("javax.net.ssl.trustStore", "certificates/akeystore.jks");
-            this.connection = new XMPPTCPConnection(connectionConfig);
-            this.connection.connect();
-            this.connection.login(format(ITEM_ID_AS_LOGIN, itemId), AUCTION_PASSWORD, AUCTION_RESOURCE);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("connection failed");
-        }
-
+		ConnectionConfiguration connectionConfig = new ConnectionConfiguration(XMPP_HOSTNAME, 5222);
+		connectionConfig.setSecurityMode(ConnectionConfiguration.SecurityMode.required);
+		System.setProperty("javax.net.ssl.trustStore", "certificates/akeystore.jks");
+		this.connection = new XMPPTCPConnection(connectionConfig);
 	}
 
 	public void startSellingItem() throws XMPPException, IOException, SmackException {
+		this.connection.connect();
+		this.connection.login(format(ITEM_ID_AS_LOGIN, itemId), AUCTION_PASSWORD, AUCTION_RESOURCE);
 
-		// connection.getChatManager().addChatListener(
-		// new ChatManagerListener() {
-		// @Override
-		// public void chatCreated(Chat chat, boolean createdLocally) {
-		// currentChat = chat;
-		// chat.addMessageListener(messageListener);
-		// }
-		// }
-		// );
+		ChatManager chatManager = ChatManager.getInstanceFor(this.connection);
+		chatManager.addChatListener(new ChatManagerListener() {
+			@Override
+			public void chatCreated(Chat chat, boolean createdLocally) {
+				currentChat = chat;
+				chat.addMessageListener(messageListener);
+			}
+		});
 	}
 
 	public void hasReceivedJoinRequestFromSniper() throws InterruptedException {
 		messageListener.receivesAMessage();
 	}
 
-	public void announceClosed() throws XMPPException {
-		// currentChat.sendMessage(new Message());
+	public void announceClosed() throws SmackException.NotConnectedException {
+		currentChat.sendMessage(new Message());
 	}
 
-	public void stop() {
-		// connection.disconnect();
+	public void stop() throws SmackException.NotConnectedException {
+		connection.disconnect();
 	}
 
 	public String getItemId() {
-		return itemId;
+	return itemId;
 	}
 }

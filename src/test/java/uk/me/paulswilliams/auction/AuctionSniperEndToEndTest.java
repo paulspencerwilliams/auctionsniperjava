@@ -20,7 +20,7 @@ public class AuctionSniperEndToEndTest {
     }
 
     @After
-    public void stopAuction() {
+    public void stopAuction() throws Exception{
         auction.stop();
     }
 
