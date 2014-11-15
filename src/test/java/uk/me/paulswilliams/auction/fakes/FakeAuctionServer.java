@@ -45,7 +45,9 @@ public class FakeAuctionServer {
 
 			System.setProperty("javax.net.debug", "all");
 
-			connectionConfig.setCustomSSLContext(JavaPinning.forPin("SHA256:FB34EB36E2D51A95471700CC47"));
+			SSLContext pinnedContext = JavaPinning.forPin("SHA256:533C5B11B4AD3EAFCB9BC121C1352AC141A81678AD5F22124A195980708AAD67");
+			connectionConfig.setCustomSSLContext(pinnedContext);
+
 
             this.connection = new XMPPTCPConnection(connectionConfig);
             this.connection.connect();
