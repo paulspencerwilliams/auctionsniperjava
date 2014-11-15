@@ -5,7 +5,7 @@ import uk.me.paulswilliams.auction.fakes.FakeAuctionServer;
 
 public class ApplicationRunner {
     private static final String SNIPER_ID = "sniper";
-    private static final String SNIPER_PASSWORD = "sniper";
+    private static final String SNIPER_PASSWORD = "secr3t";
     private static final String STATUS_JOINING = "joining";
     private static final String STATUS_LOST = "lost";
     private AuctionSniperDriver driver;
