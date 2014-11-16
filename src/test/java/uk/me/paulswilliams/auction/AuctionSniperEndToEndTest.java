@@ -37,7 +37,6 @@ public class AuctionSniperEndToEndTest {
     }
 
     @Test
-    @Ignore
     public void sniperWinsAnAuctionByBiddingHigher() throws Exception {
         auction.startSellingItem();
 

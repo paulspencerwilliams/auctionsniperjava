@@ -7,6 +7,7 @@ import uk.me.paulswilliams.auction.AuctionSniper;
 import uk.me.paulswilliams.auction.SniperListener;
 
 import static org.mockito.Mockito.*;
+import static uk.me.paulswilliams.auction.AuctionEventListener.PriceSource.FromOtherBidder;
 import static uk.me.paulswilliams.auction.AuctionEventListener.PriceSource.FromSniper;
 
 public class AuctionSniperTest {
@@ -15,12 +16,29 @@ public class AuctionSniperTest {
     private final AuctionSniper sniper = new AuctionSniper(auction,
             sniperListener);
 
-
     @Test
-    public void reportsLostWhenAuctionCloses() {
+    public void reportsLostWhenAuctionClosesImmediately() {
         sniper.auctionClosed();
 
         verify(sniperListener).sniperLost();
+    }
+
+    @Test
+    public void reportsLostIfAuctionClosesWhenBidding() {
+        sniper.currentPrice(123, 45, FromOtherBidder);
+
+        sniper.auctionClosed();
+
+        verify(sniperListener, atLeastOnce()).sniperLost();
+    }
+
+    @Test
+    public void reportsWonIfAuctionClosesWhenWinning() {
+        sniper.currentPrice(123, 45, FromSniper);
+
+        sniper.auctionClosed();
+
+        verify(sniperListener, atLeastOnce()).sniperWon();
     }
 
     @Test
