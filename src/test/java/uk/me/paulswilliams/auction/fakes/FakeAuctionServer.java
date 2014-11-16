@@ -10,17 +10,12 @@ import static java.lang.String.format;
 
 public class FakeAuctionServer {
 	public static final String XMPP_HOSTNAME = "localhost";
-
 	private static final String ITEM_ID_AS_LOGIN = "auction-%s";
-
 	private static final String AUCTION_PASSWORD = "secr3t";
-
 	private static final String AUCTION_RESOURCE = "Auction";
 
-	private XMPPConnection connection;
-
 	private String itemId;
-
+	private XMPPConnection connection;
 	private Chat currentChat;
 
 	private final SingleMessageListener messageListener = new SingleMessageListener();
@@ -60,6 +55,6 @@ public class FakeAuctionServer {
 	}
 
 	public String getItemId() {
-	return itemId;
+		return itemId;
 	}
 }
