@@ -6,7 +6,6 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 
 import javax.swing.*;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 public class Main {
 
@@ -23,6 +22,7 @@ public class Main {
 	AUCTION_RESOURCE;
 
 	private MainWindow ui;
+	private Chat notToBeGCd;
 
 	public Main() throws Exception {
 		startUserInterface();
@@ -30,14 +30,25 @@ public class Main {
 
 	public static void main(String... args) throws Exception {
 		Main main = new Main();
-		XMPPConnection connection = connectTo(args[ARG_HOSTNAME], args[ARG_USERNAME], args[ARG_PASSWORD]);
-		Chat chat = ChatManager.getInstanceFor(connection).createChat(
-				auctionId(args[ARG_ITEM_ID], connection), new MessageListener() {
+		main.joinAuction(connection(args[ARG_HOSTNAME], args[ARG_USERNAME], args[ARG_PASSWORD]), args[ARG_ITEM_ID]);
+	}
+
+	private void joinAuction(XMPPConnection connection, String itemId) throws IOException,
+			XMPPException, SmackException {
+		final Chat chat = ChatManager.getInstanceFor(connection).createChat(
+				auctionId(itemId, connection), new MessageListener() {
 					@Override
 					public void processMessage(Chat chat, Message message) {
-						// nothing yet
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								ui.showStatus(MainWindow.STATUS_LOST);
+							}
+						});
 					}
 				});
+
+		this.notToBeGCd = chat;
 		chat.sendMessage(new Message());
 	}
 
@@ -46,8 +57,8 @@ public class Main {
 				.getServiceName());
 	}
 
-	private static XMPPConnection connectTo(String hostname, String username,
-											String password) throws IOException, XMPPException, SmackException {
+	private static XMPPConnection connection(String hostname, String username,
+											 String password) throws IOException, XMPPException, SmackException {
 		ConnectionConfiguration connectionConfig = new
 				ConnectionConfiguration(hostname, 5222);
 		connectionConfig.setSecurityMode(ConnectionConfiguration.SecurityMode.required);
