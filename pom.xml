@@ -33,7 +33,6 @@
             <groupId>org.igniterealtime.smack</groupId>
             <artifactId>smack-tcp</artifactId>
             <version>4.0.5</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
