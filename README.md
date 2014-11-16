@@ -21,4 +21,8 @@
     verify(auction, times(1)).bid(price + increment);
     verify(sniperListener, atLeastOnce()).sniperBidding();
 
+Although didn't fail when introducing show winning functionality
+
+## The whole JMock allowances / status functionality
+
 ## The value of a supporting to do list to prevent flow breakage
