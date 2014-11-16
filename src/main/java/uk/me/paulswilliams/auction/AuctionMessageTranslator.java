@@ -3,14 +3,19 @@ package uk.me.paulswilliams.auction;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.packet.Message;
+import uk.me.paulswilliams.auction.AuctionEventListener.PriceSource;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static uk.me.paulswilliams.auction.AuctionEventListener.PriceSource.*;
+
 public class AuctionMessageTranslator implements MessageListener {
+    private final String sniperId;
     private AuctionEventListener listener;
 
-    public AuctionMessageTranslator(AuctionEventListener listener) {
+    public AuctionMessageTranslator(String sniperId, AuctionEventListener listener) {
+        this.sniperId = sniperId;
         this.listener = listener;
     }
 
@@ -22,7 +27,9 @@ public class AuctionMessageTranslator implements MessageListener {
             listener.auctionClosed();
         }
         else if("PRICE".equals(eventType)) {
-            listener.currentPrice(event.currentPrice(), event.increment());
+            listener.currentPrice(event.currentPrice(),
+                    event.increment(),
+                    event.isFrom(sniperId));
         }
     }
 
@@ -33,12 +40,19 @@ public class AuctionMessageTranslator implements MessageListener {
         public String type() {return get("Event");}
         public int currentPrice() {return getInt("CurrentPrice");}
         public int increment() {return getInt("Increment");}
+        public PriceSource isFrom(String sniperId) {
+            return sniperId.equals(bidder())? FromSniper : FromOtherBidder;
+        }
 
-        public int getInt(String fieldName) {
+        private String bidder() {
+            return get("Bidder");
+        }
+
+        private int getInt(String fieldName) {
             return Integer.parseInt(get(fieldName));
         }
 
-        public String get(String fieldName) {
+        private String get(String fieldName) {
             return fields.get(fieldName);
         }
 
@@ -58,5 +72,7 @@ public class AuctionMessageTranslator implements MessageListener {
         static String[] fieldsIn(String messageBody) {
             return messageBody.split(";");
         }
+
+
     }
 }

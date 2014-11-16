@@ -7,6 +7,7 @@ import uk.me.paulswilliams.auction.AuctionSniper;
 import uk.me.paulswilliams.auction.SniperListener;
 
 import static org.mockito.Mockito.*;
+import static uk.me.paulswilliams.auction.AuctionEventListener.PriceSource.FromSniper;
 
 public class AuctionSniperTest {
     private final SniperListener sniperListener = mock(SniperListener.class);
@@ -27,9 +28,17 @@ public class AuctionSniperTest {
         final int price = 1001;
         final int increment = 25;
 
-        sniper.currentPrice(price, increment);
+        sniper.currentPrice(price, increment, AuctionEventListener.PriceSource.FromOtherBidder);
 
         verify(auction).bid(price + increment);
         verify(sniperListener, atLeastOnce()).sniperBidding();
+    }
+
+    @Test
+    public void reportsIsWinningWhenCurrentPriceComesFromSniper() {
+        sniper.currentPrice(123, 45, FromSniper);
+
+        verifyZeroInteractions(auction);
+        verify(sniperListener, atLeastOnce()).sniperWinning();
     }
 }
