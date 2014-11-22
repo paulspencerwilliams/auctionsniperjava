@@ -2,6 +2,42 @@
 
 # This Java attempt
 
+# Installation
+
+## Prerequisites
+    You'll need Java 7, Maven and Docker
+
+## Clone the repo and submodules
+    git clone git@github.com:paulspencerwilliams/auctionsniperjava.git
+    git submodule update
+
+## Build and run Vines XMPP server using Docker
+Build the docker image by
+    docker build -t 'paulswilliams/vines' vagrant/
+and wait, and wait, and wait
+
+Once complete, run the docker image
+    docker run -p 5222:5222 -t 'paulswilliams/vines'
+
+## Obtain certificate from Vines into Java keystore
+Get container id using 
+    docker ps | grep paulswilliams
+
+Retreive certificate from Docker
+    docker cp {container id}:/localhost/conf/certs/localhost.crt certificates/ 
+
+Import certificate
+    keytool -import -alias localhost -file certificates/localhost.crt  -keystore certificates/akeystore.jks 
+And select a password
+
+## And run the tests!!
+    mvn test
+
+# Cleanup
+
+## Delete Docker images
+...
+
 # Challenges
 
 ## Smack Api changes
