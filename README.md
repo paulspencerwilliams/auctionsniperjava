@@ -17,20 +17,25 @@ Build the docker image by
 and wait, and wait, and wait
 
 Once complete, run the docker image
+
     docker run -p 5222:5222 -t 'paulswilliams/vines'
 
 ## Obtain certificate from Vines into Java keystore
 Get container id using 
+
     docker ps | grep paulswilliams
 
 Retreive certificate from Docker
+
     docker cp {container id}:/localhost/conf/certs/localhost.crt certificates/ 
 
 Import certificate
+
     keytool -import -alias localhost -file certificates/localhost.crt  -keystore certificates/akeystore.jks 
 And select a password
 
 ## And run the tests!!
+
     mvn test
 
 # Cleanup
