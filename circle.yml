@@ -11,6 +11,7 @@ test:
   pre: 
     - docker build -t 'paulswilliams/vines' vagrant/
     - docker run -d -p 5222:5222 -t paulswilliams/vines
+    - docker cp $(docker ps -q -n=1):/localhost/conf/certs/localhost.crt certificates/ 
 
 
 
