@@ -13,7 +13,9 @@
 
 ## Build and run Vines XMPP server using Docker
 Build the docker image by
+
     docker build -t 'paulswilliams/vines' vagrant/
+    
 and wait, and wait, and wait
 
 Once complete, run the docker image
