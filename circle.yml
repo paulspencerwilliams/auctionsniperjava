@@ -1,0 +1,16 @@
+machine:
+  services:
+    - docker
+
+checkout:
+  post:
+    - git submodule sync
+    - git submodule update --init
+
+  test:
+    pre: 
+      docker build -t 'paulswilliams/vines' vagrant/
+      docker run -p 5222:5222 -t 'paulswilliams/vines'
+
+
+
