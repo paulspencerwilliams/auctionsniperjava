@@ -55,6 +55,8 @@ And select a password
 
 # Key lessons
 
+## Disable debugging - run tests that fail to show failure is easy to follow
+
 ## Keeping the tests real simple and lean
 
 ## Defining variables in unit tests final!
