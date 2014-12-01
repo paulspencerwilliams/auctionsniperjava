@@ -55,6 +55,8 @@ And select a password
 
 # Key lessons
 
+## Learning is key, not the code. That's why I deleted it all!!
+
 ## Disable debugging - run tests that fail to show failure is easy to follow
 
 ## Keeping the tests real simple and lean
