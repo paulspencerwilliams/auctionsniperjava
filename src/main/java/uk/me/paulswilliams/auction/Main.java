@@ -3,17 +3,17 @@ package uk.me.paulswilliams.auction;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManager;
 import org.jivesoftware.smack.ConnectionConfiguration;
-import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 
 import javax.swing.SwingUtilities;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
-public class Main {
+public class Main implements SniperListener {
     public static final String MAIN_WINDOW_NAME = "Auction Sniper Main";
     private static final int ARG_HOSTNAME = 0;
     private static final int ARG_USERNAME = 1;
@@ -23,7 +23,10 @@ public class Main {
     private static final String ITEM_ID_AS_LOGIN = "auction-%s";
     private static final String AUCTION_ID_FORMAT
             = ITEM_ID_AS_LOGIN + "@%s/" + AUCTION_RESOURCE;
+    public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: Join;";
+    public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: Bid; Price: %d;";
     private MainWindow ui;
+    private Chat notToBeGCd;
 
     public Main() throws Exception {
         startUserInterface();
@@ -48,22 +51,40 @@ public class Main {
 
     private void joinAuction(XMPPConnection connection, String itemId)
             throws IOException, XMPPException, SmackException {
-        Chat chat = ChatManager.getInstanceFor(connection).createChat(
-                auctionId(itemId, connection),
-                new MessageListener() {
-                    @Override
-                    public void processMessage(Chat chat, Message message) {
-                        SwingUtilities.invokeLater(new Runnable() {
 
-                            @Override
-                            public void run() {
-                                ui.showStatus(MainWindow.STATUS_LOST);
-                            }
-                        });
-                    }
+        disconnectWhenUICloses(connection);
+        final Chat chat = ChatManager.getInstanceFor(connection).createChat(
+                auctionId(itemId, connection), null);
+        this.notToBeGCd = chat;
+        Auction auction = new Auction() {
+            @Override
+            public void bid(int amount) {
+                try {
+                    chat.sendMessage(String.format(BID_COMMAND_FORMAT, amount));
+                } catch (XMPPException e) {
+                    e.printStackTrace();
+                } catch (SmackException.NotConnectedException e) {
+                    e.printStackTrace();
                 }
-        );
-        chat.sendMessage(new Message());
+            }
+        };
+        chat.addMessageListener(
+                new AuctionMessageTranslator(
+                        new AuctionSniper(auction, this)));
+        chat.sendMessage(JOIN_COMMAND_FORMAT);
+    }
+
+    private void disconnectWhenUICloses(final XMPPConnection connection) {
+        ui.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                try {
+                    connection.disconnect();
+                } catch (SmackException.NotConnectedException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
     }
 
     private static String auctionId(String itemId, XMPPConnection connection) {
@@ -84,5 +105,26 @@ public class Main {
         connection.connect();
         connection.login(username, password, AUCTION_RESOURCE);
         return connection;
+    }
+
+    @Override
+    public void sniperLost() {
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                ui.showStatus(MainWindow.STATUS_LOST);
+            }
+        });
+    }
+
+    @Override
+    public void sniperBidding() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                ui.showStatus(MainWindow.STATUS_BIDDING);
+            }
+        });
     }
 }

@@ -2,7 +2,9 @@ package uk.me.paulswilliams.auction.tests;
 
 import uk.me.paulswilliams.auction.FakeAuctionServer;
 import uk.me.paulswilliams.auction.Main;
+import uk.me.paulswilliams.auction.MainWindow;
 
+import static java.lang.String.format;
 import static uk.me.paulswilliams.auction.FakeAuctionServer.XMPP_HOSTNAME;
 import static uk.me.paulswilliams.auction.MainWindow.*;
 
@@ -10,6 +12,8 @@ public class ApplicationRunner {
 
     private static final String SNIPER_ID = "sniper";
     private static final String SNIPER_PASSWORD = "secr3t";
+    public static final String SNIPER_XMPP_ID =
+            format("%s@%s/Auction", SNIPER_ID, FakeAuctionServer.XMPP_HOSTNAME);
     private AuctionSniperDriver driver;
 
     public void startBiddingIn(final FakeAuctionServer auction) {
@@ -38,5 +42,9 @@ public class ApplicationRunner {
 
     public void showsSniperHasLostAuction() {
         driver.showsSniperStatus(STATUS_LOST);
+    }
+
+    public void hasShownSniperIsBidding() {
+        driver.showsSniperStatus(STATUS_BIDDING);
     }
 }

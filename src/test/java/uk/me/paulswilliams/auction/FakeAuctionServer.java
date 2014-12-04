@@ -1,5 +1,6 @@
 package uk.me.paulswilliams.auction;
 
+import org.hamcrest.Matcher;
 import org.jivesoftware.smack.*;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
@@ -7,6 +8,12 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import java.io.IOException;
 
 import static java.lang.String.format;
+import static org.hamcrest.CoreMatchers.anything;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static uk.me.paulswilliams.auction.Main.BID_COMMAND_FORMAT;
+import static uk.me.paulswilliams.auction.Main.JOIN_COMMAND_FORMAT;
 
 public class FakeAuctionServer {
     public static final String ITEM_ID_AS_LOGIN = "auction-%s";
@@ -47,15 +54,34 @@ public class FakeAuctionServer {
         return itemId;
     }
 
-    public void hasReceivedJoinRequestFromSniper() throws InterruptedException {
-        messageListener.receivesAMessage();
+    public void hasReceivedJoinRequestFromSniper(String sniperId) throws InterruptedException {
+        receivesAMessageMatching(sniperId, equalTo(JOIN_COMMAND_FORMAT));
     }
 
-    public void annouceClosed() throws SmackException.NotConnectedException {
-        currentChat.sendMessage(new Message());
+    public void hasReceivedBid(int bid, String sniperId) throws InterruptedException {
+        receivesAMessageMatching(sniperId, equalTo(format(BID_COMMAND_FORMAT, bid)));
+    }
+
+    private void receivesAMessageMatching(String sniperId, Matcher<? super String> messageMatcher) throws InterruptedException {
+        messageListener.receivesAMessage(messageMatcher);
+        assertThat(currentChat.getParticipant(), equalTo(sniperId));
+    }
+
+    public void annouceClosed() throws SmackException.NotConnectedException, XMPPException {
+        currentChat.sendMessage("SOLVersion: 1.1; Event: CLOSE;");
     }
 
     public void stop() throws SmackException.NotConnectedException {
         connection.disconnect();
     }
+
+    public void reportPrice(int price, int increment, String bidder) throws XMPPException, SmackException.NotConnectedException {
+        currentChat.sendMessage(
+                String.format("SOLVersion: 1.1; Event: PRICE; "
+                                + "CurrentPrice: %d; Increment: %d; Bidder: %s;",
+                                price, increment, bidder)
+        );
+    }
+
+
 }
