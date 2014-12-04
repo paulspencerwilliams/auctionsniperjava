@@ -2,10 +2,13 @@ package uk.me.paulswilliams.auction.tests;
 
 import org.junit.Test;
 import uk.me.paulswilliams.auction.Auction;
+import uk.me.paulswilliams.auction.AuctionEventListener;
 import uk.me.paulswilliams.auction.AuctionSniper;
 import uk.me.paulswilliams.auction.SniperListener;
 
 import static org.mockito.Mockito.*;
+import static uk.me.paulswilliams.auction.AuctionEventListener.PriceSource.FromOtherBidder;
+import static uk.me.paulswilliams.auction.AuctionEventListener.PriceSource.FromSniper;
 
 public class AuctionSniperTest {
     private SniperListener sniperListener = mock(SniperListener.class);
@@ -13,9 +16,9 @@ public class AuctionSniperTest {
     private AuctionSniper sniper = new AuctionSniper(auction, sniperListener);
 
     @Test
-    public void reportsLostWhenAuctionCloses() {
+    public void reportsLostWhenAuctionClosesImmediately() {
         sniper.auctionClosed();
-        verify(sniperListener, times(1)).sniperLost();
+        verify(sniperListener, atLeastOnce()).sniperLost();
     }
 
     @Test
@@ -23,9 +26,35 @@ public class AuctionSniperTest {
         final int price = 1001;
         final int increment = 25;
 
-        sniper.currentPrice(price, increment);
+        sniper.currentPrice(price, increment, FromOtherBidder);
 
         verify(auction, times(1)).bid(price + increment);
         verify(sniperListener, atLeastOnce()).sniperBidding();
     }
+
+    @Test
+    public void reportsIsWinningWhenCurrentPriceComesFromSniper() {
+        sniper.currentPrice(123, 45, FromSniper);
+
+        verify(sniperListener, atLeastOnce()).sniperWinning();
+    }
+
+    @Test
+    public void reportsLostIfAuctionClosesWhenBidding() {
+        sniper.currentPrice(123, 45, FromOtherBidder);
+        sniper.auctionClosed();
+
+        verify(sniperListener, atLeastOnce()).sniperLost();
+    }
+
+    @Test
+    public void reportsWonIfAuctionClosesWhenWinning() {
+        sniper.currentPrice(123, 45, FromSniper);
+        sniper.auctionClosed();
+
+        verify(sniperListener, atLeastOnce()).sniperWon();
+    }
+
+
+
 }
