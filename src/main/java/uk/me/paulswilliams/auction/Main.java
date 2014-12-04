@@ -95,7 +95,7 @@ public class Main {
         connection.login(username, password, AUCTION_RESOURCE);
         return connection;
     }
-K
+    
     private static class XMPPAuction implements Auction {
         private final Chat chat;
 
