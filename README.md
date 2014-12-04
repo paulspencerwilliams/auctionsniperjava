@@ -73,3 +73,7 @@ Although didn't fail when introducing show winning functionality
 ## The whole JMock allowances / status functionality
 
 ## The value of a supporting to do list to prevent flow breakage
+
+## Avoid primative obsession
+
+Including use of generics on collections where type is a duplication smell.
