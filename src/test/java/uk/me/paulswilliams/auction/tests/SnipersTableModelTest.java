@@ -43,6 +43,13 @@ public class SnipersTableModelTest {
         verifyNoMoreInteractions(listener);
     }
 
+    @Test
+    public void setUpColumnsHeadings() {
+        for (Column column : Column.values()) {
+            assertEquals(column.name, model.getColumnName(column.ordinal()));
+        }
+    }
+
     private Matcher<TableModelEvent> aRowChangedEvent() {
         return samePropertyValuesAs(new TableModelEvent(model, 0));
     }
