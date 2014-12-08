@@ -25,7 +25,7 @@ public class Main {
             = ITEM_ID_AS_LOGIN + "@%s/" + AUCTION_RESOURCE;
     public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: Join;";
     public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: Bid; Price: %d;";
-    private MainWindow ui;
+    private MainWindow mainWindow;
     private Chat notToBeGCd;
 
     public Main() throws Exception {
@@ -37,7 +37,7 @@ public class Main {
 
             @Override
             public void run() {
-                ui = new MainWindow();
+                mainWindow = new MainWindow();
             }
         });
     }
@@ -65,7 +65,7 @@ public class Main {
     }
 
     private void disconnectWhenUICloses(final XMPPConnection connection) {
-        ui.addWindowListener(new WindowAdapter() {
+        mainWindow.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
                 try {
@@ -128,11 +128,11 @@ public class Main {
     public class SniperStateDisplayer implements SniperListener {
 
         @Override
-        public void sniperStateChanged(final SniperSnapshot state) {
+        public void sniperStateChanged(final SniperSnapshot snapshot) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    ui.sniperStatusChanged(state, MainWindow.STATUS_BIDDING);
+                    mainWindow.sniperStatusChanged(snapshot);
                 }
             });
         }
