@@ -2,7 +2,7 @@ package uk.me.paulswilliams.auction;
 
 import javax.swing.table.AbstractTableModel;
 
-public class SnipersTableModel extends AbstractTableModel {
+public class SnipersTableModel extends AbstractTableModel implements SniperListener{
     private static final SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0, SniperState.JOINING);
     private static final String[] STATUS_TEXT = { "Joining", "Bidding", "Winning", "Lost", "Won"};
     private SniperSnapshot snapshot = STARTING_UP;
@@ -23,9 +23,9 @@ public class SnipersTableModel extends AbstractTableModel {
         return STATUS_TEXT[state.ordinal()];
     }
 
-    public void sniperStatusChanges(SniperSnapshot newSnapshot) {
+    @Override
+    public void sniperStateChanged(SniperSnapshot newSnapshot) {
         this.snapshot = newSnapshot;
         fireTableRowsUpdated(0, 0);
     }
-
 }

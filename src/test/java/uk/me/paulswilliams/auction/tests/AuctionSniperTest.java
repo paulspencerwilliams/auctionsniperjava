@@ -17,7 +17,7 @@ public class AuctionSniperTest {
     private static final String ITEM_ID = "54321";
     private SniperListener sniperListener = mock(SniperListener.class);
     private Auction auction = mock(Auction.class);
-    private AuctionSniper sniper = new AuctionSniper(auction, sniperListener, ITEM_ID);
+    private AuctionSniper sniper = new AuctionSniper(ITEM_ID, auction, sniperListener);
 
     @Test
     public void reportsLostWhenAuctionClosesImmediately() {

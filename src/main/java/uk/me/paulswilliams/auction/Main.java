@@ -25,19 +25,15 @@ public class Main {
             = ITEM_ID_AS_LOGIN + "@%s/" + AUCTION_RESOURCE;
     public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: Join;";
     public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: Bid; Price: %d;";
-    private MainWindow mainWindow;
+    private final SnipersTableModel snipers = new SnipersTableModel();
+    private MainWindow ui;
     private Chat notToBeGCd;
 
     public Main() throws Exception {
-        startUserInterface();
-    }
-
-    private void startUserInterface() throws Exception {
         SwingUtilities.invokeAndWait(new Runnable() {
-
             @Override
             public void run() {
-                mainWindow = new MainWindow();
+                ui = new MainWindow(snipers);
             }
         });
     }
@@ -60,12 +56,12 @@ public class Main {
         chat.addMessageListener(
                 new AuctionMessageTranslator(
                         connection.getUser(),
-                        new AuctionSniper(auction, new SniperStateDisplayer(), itemId)));
+                        new AuctionSniper(itemId, auction, new SwingThreadSniperListener(snipers))));
         auction.join();
     }
 
     private void disconnectWhenUICloses(final XMPPConnection connection) {
-        mainWindow.addWindowListener(new WindowAdapter() {
+        ui.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
                 try {
@@ -125,17 +121,4 @@ public class Main {
         }
     }
 
-    public class SniperStateDisplayer implements SniperListener {
-
-        @Override
-        public void sniperStateChanged(final SniperSnapshot snapshot) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    mainWindow.sniperStatusChanged(snapshot);
-                }
-            });
-        }
-
-    }
 }
