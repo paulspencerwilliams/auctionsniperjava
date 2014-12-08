@@ -67,8 +67,14 @@ And select a password
 
     verify(auction, times(1)).bid(price + increment);
     verify(sniperListener, atLeastOnce()).sniperBidding();
+    
+###
+However, JMock has default strict mocks, so they're not that loose. Yes, allowances / when / then helps, but enough?
 
 Although didn't fail when introducing show winning functionality
+
+##
+Refactoring not done in a way to allow too many small commits.
 
 ## The whole JMock allowances / status functionality
 
