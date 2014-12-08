@@ -7,7 +7,9 @@ import com.objogate.wl.swing.driver.JTableDriver;
 import com.objogate.wl.swing.gesture.GesturePerformer;
 import uk.me.paulswilliams.auction.Main;
 
+import static com.objogate.wl.swing.matcher.IterableComponentsMatcher.matching;
 import static com.objogate.wl.swing.matcher.JLabelTextMatcher.withLabelText;
+import static java.lang.String.valueOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static uk.me.paulswilliams.auction.MainWindow.SNIPER_STATUS_NAME;
 
@@ -23,4 +25,11 @@ public class AuctionSniperDriver extends JFrameDriver{
     }
 
 
+    public void showsSniperStatus(String itemId, int lastPrice, int lastBid, String statusText) {
+        final JTableDriver table = new JTableDriver(this);
+        table.hasRow(matching(withLabelText(itemId),
+                withLabelText(valueOf(lastPrice)),
+                withLabelText(valueOf(lastBid)),
+                withLabelText(statusText)));
+    }
 }
