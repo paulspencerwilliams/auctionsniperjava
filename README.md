@@ -9,7 +9,7 @@
 
 ## Clone the repo and submodules
     git clone git@github.com:paulspencerwilliams/auctionsniperjava.git
-    git submodule update
+    git submodule update --init
 
 ## Build and run Vines XMPP server using Docker
 Build the docker image by
@@ -21,6 +21,10 @@ and wait, and wait, and wait
 Once complete, run the docker image
 
     docker run -p 5222:5222 -t 'paulswilliams/vines'
+
+On a Mac with Boot2Docker, create an ssh tunnel
+
+    boot2docker ssh -L 5222:localhost:5222
 
 ## Obtain certificate from Vines into Java keystore
 Get container id using 
