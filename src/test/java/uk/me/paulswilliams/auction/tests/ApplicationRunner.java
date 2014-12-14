@@ -35,7 +35,7 @@ public class ApplicationRunner {
         driver = new AuctionSniperDriver(1000);
         driver.hasTitle(MainWindow.APPLICATION_TITLE);
         driver.hasColumnTitles();
-        driver.showsSniperStatus(itemId, 0, 0, STATUS_JOINING);
+        driver.showsSniperStatus("", 0, 0, STATUS_JOINING);
     }
 
     public void stop() {
@@ -44,8 +44,8 @@ public class ApplicationRunner {
         }
     }
 
-    public void showsSniperHasLostAuction() {
-        driver.showsSniperStatus(itemId, 0, 0, STATUS_LOST);
+    public void showsSniperHasLostAuction(int lastPrice, int lastBid) {
+        driver.showsSniperStatus(itemId, lastPrice, lastBid, STATUS_LOST);
     }
 
     public void hasShownSniperIsBidding(int lastPrice, int lastBid) {
