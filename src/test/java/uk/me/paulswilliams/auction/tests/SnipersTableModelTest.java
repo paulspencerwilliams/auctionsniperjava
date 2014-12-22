@@ -15,6 +15,8 @@ import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.*;
+import static uk.me.paulswilliams.auction.SniperState.*;
+import static uk.me.paulswilliams.auction.SnipersTableModel.textFor;
 
 public class SnipersTableModelTest {
 
@@ -33,12 +35,12 @@ public class SnipersTableModelTest {
 
     @Test
     public void setsSniperValuesInColumns(){
-        model.sniperStateChanged(new SniperSnapshot("item id", 555, 666, SniperState.BIDDING));
+        model.sniperStateChanged(new SniperSnapshot("item id", 555, 666, BIDDING));
 
         assertColumnEquals(Column.ITEM_IDENTIFIER, "item id");
         assertColumnEquals(Column.LAST_PRICE, 555);
         assertColumnEquals(Column.LAST_BID, 666);
-        assertColumnEquals(Column.SNIPER_STATE, MainWindow.STATUS_BIDDING);
+        assertColumnEquals(Column.SNIPER_STATE, textFor(BIDDING));
         verify(listener, times(1)).tableChanged(argThat(aRowChangedEvent()));
         verifyNoMoreInteractions(listener);
     }
