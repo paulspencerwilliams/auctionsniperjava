@@ -56,6 +56,7 @@ And select a password
 ## Vines differing handling of multiple connections
 
 ## Impedance mismatch between Mockito and JMock
+### Mockito not strict mock...
 
 # Key lessons
 

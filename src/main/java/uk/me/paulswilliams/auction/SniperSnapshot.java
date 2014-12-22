@@ -64,4 +64,8 @@ public class SniperSnapshot {
     public SniperSnapshot closed() {
         return new SniperSnapshot(itemId, lastPrice, lastBid, state.whenAuctionClosed());
     }
+
+    public boolean isForSameAs(SniperSnapshot sniperSnapshot) {
+        return itemId.equals(sniperSnapshot.itemId);
+    }
 }
