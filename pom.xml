@@ -17,7 +17,12 @@
         <dependency>
             <groupId>com.googlecode.windowlicker</groupId>
             <artifactId>windowlicker-swing</artifactId>
-            <version>r268</version>
+            <version>DEV</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.windowlicker</groupId>
+            <artifactId>windowlicker-core</artifactId>
+            <version>DEV</version>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
