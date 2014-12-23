@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.googlecode.windowlicker</groupId>
+  <artifactId>windowlicker-core</artifactId>
+  <versioning>
+    <release>DEV</release>
+    <versions>
+      <version>DEV</version>
+    </versions>
+    <lastUpdated>20141223091106</lastUpdated>
+  </versioning>
+</metadata>
