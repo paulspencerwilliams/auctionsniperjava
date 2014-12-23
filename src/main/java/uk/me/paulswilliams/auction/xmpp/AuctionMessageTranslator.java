@@ -1,8 +1,9 @@
-package uk.me.paulswilliams.auction;
+package uk.me.paulswilliams.auction.xmpp;
 
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.packet.Message;
+import uk.me.paulswilliams.auction.AuctionEventListener;
 import uk.me.paulswilliams.auction.AuctionEventListener.PriceSource;
 
 import java.util.HashMap;

@@ -10,8 +10,8 @@ import static uk.me.paulswilliams.auction.userinterface.SnipersTableModel.textFo
 
 public class ApplicationRunner {
 
-    private static final String SNIPER_ID = "sniper";
-    private static final String SNIPER_PASSWORD = "secr3t";
+    public static final String SNIPER_ID = "sniper";
+    public static final String SNIPER_PASSWORD = "secr3t";
     public static final String SNIPER_XMPP_ID =
             format("%s@%s/Auction", SNIPER_ID, FakeAuctionServer.XMPP_HOSTNAME);
     private AuctionSniperDriver driver;

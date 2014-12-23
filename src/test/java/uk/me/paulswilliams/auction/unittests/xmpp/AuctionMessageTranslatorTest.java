@@ -1,10 +1,10 @@
-package uk.me.paulswilliams.auction.unittests;
+package uk.me.paulswilliams.auction.unittests.xmpp;
 
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.packet.Message;
 import org.junit.Test;
 import uk.me.paulswilliams.auction.AuctionEventListener;
-import uk.me.paulswilliams.auction.AuctionMessageTranslator;
+import uk.me.paulswilliams.auction.xmpp.AuctionMessageTranslator;
 
 import static java.lang.String.format;
 import static org.mockito.Mockito.mock;

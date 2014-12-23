@@ -15,8 +15,8 @@ import java.io.IOException;
 import static java.lang.String.format;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static uk.me.paulswilliams.auction.XMPPAuction.BID_COMMAND_FORMAT;
-import static uk.me.paulswilliams.auction.XMPPAuction.JOIN_COMMAND_FORMAT;
+import static uk.me.paulswilliams.auction.xmpp.XMPPAuction.BID_COMMAND_FORMAT;
+import static uk.me.paulswilliams.auction.xmpp.XMPPAuction.JOIN_COMMAND_FORMAT;
 
 public class FakeAuctionServer {
     public static final String ITEM_ID_AS_LOGIN = "auction-%s";
@@ -57,7 +57,7 @@ public class FakeAuctionServer {
         return itemId;
     }
 
-    public void hasReceivedJoinRequestFromSniper(String sniperId) throws InterruptedException {
+    public void hasReceivedJoinRequestFrom(String sniperId) throws InterruptedException {
         receivesAMessageMatching(sniperId, equalTo(JOIN_COMMAND_FORMAT));
     }
 
