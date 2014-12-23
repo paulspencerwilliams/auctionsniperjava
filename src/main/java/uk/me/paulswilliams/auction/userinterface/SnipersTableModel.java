@@ -1,12 +1,15 @@
-package uk.me.paulswilliams.auction;
+package uk.me.paulswilliams.auction.userinterface;
 
 import com.objogate.exception.Defect;
+import uk.me.paulswilliams.auction.SniperListener;
+import uk.me.paulswilliams.auction.SniperSnapshot;
+import uk.me.paulswilliams.auction.SniperState;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SnipersTableModel extends AbstractTableModel implements SniperListener{
+public class SnipersTableModel extends AbstractTableModel implements SniperListener {
 
     private static final SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0, SniperState.JOINING);
     private static final String[] STATUS_TEXT = { "Joining", "Bidding", "Winning", "Lost", "Won"};

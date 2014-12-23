@@ -6,11 +6,10 @@ import com.objogate.wl.swing.driver.JButtonDriver;
 import com.objogate.wl.swing.driver.JFrameDriver;
 import com.objogate.wl.swing.driver.JTableDriver;
 import com.objogate.wl.swing.driver.JTableHeaderDriver;
-import com.objogate.wl.swing.driver.JTextComponentDriver;
 import com.objogate.wl.swing.driver.JTextFieldDriver;
 import com.objogate.wl.swing.gesture.GesturePerformer;
 import uk.me.paulswilliams.auction.Main;
-import uk.me.paulswilliams.auction.MainWindow;
+import uk.me.paulswilliams.auction.userinterface.MainWindow;
 
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
@@ -18,8 +17,6 @@ import javax.swing.table.JTableHeader;
 import static com.objogate.wl.swing.matcher.IterableComponentsMatcher.matching;
 import static com.objogate.wl.swing.matcher.JLabelTextMatcher.withLabelText;
 import static java.lang.String.valueOf;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static uk.me.paulswilliams.auction.MainWindow.SNIPER_STATUS_NAME;
 
 public class AuctionSniperDriver extends JFrameDriver{
     public AuctionSniperDriver(int timeoutMillis) {

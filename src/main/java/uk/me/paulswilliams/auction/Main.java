@@ -5,6 +5,8 @@ import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
+import uk.me.paulswilliams.auction.userinterface.MainWindow;
+import uk.me.paulswilliams.auction.userinterface.SnipersTableModel;
 
 import javax.swing.SwingUtilities;
 import java.awt.event.WindowAdapter;

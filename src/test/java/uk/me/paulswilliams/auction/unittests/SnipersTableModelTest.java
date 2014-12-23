@@ -5,9 +5,9 @@ import com.objogate.exception.Defect;
 import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
-import uk.me.paulswilliams.auction.Column;
+import uk.me.paulswilliams.auction.userinterface.Column;
 import uk.me.paulswilliams.auction.SniperSnapshot;
-import uk.me.paulswilliams.auction.SnipersTableModel;
+import uk.me.paulswilliams.auction.userinterface.SnipersTableModel;
 
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;

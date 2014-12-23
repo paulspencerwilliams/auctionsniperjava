@@ -1,4 +1,6 @@
-package uk.me.paulswilliams.auction;
+package uk.me.paulswilliams.auction.userinterface;
+
+import uk.me.paulswilliams.auction.SniperSnapshot;
 
 public enum Column {
     ITEM_IDENTIFIER("Item") {

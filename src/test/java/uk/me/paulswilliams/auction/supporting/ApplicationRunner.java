@@ -1,12 +1,12 @@
 package uk.me.paulswilliams.auction.supporting;
 
 import uk.me.paulswilliams.auction.Main;
-import uk.me.paulswilliams.auction.MainWindow;
+import uk.me.paulswilliams.auction.userinterface.MainWindow;
 
 import static java.lang.String.format;
 import static uk.me.paulswilliams.auction.supporting.FakeAuctionServer.XMPP_HOSTNAME;
 import static uk.me.paulswilliams.auction.SniperState.*;
-import static uk.me.paulswilliams.auction.SnipersTableModel.textFor;
+import static uk.me.paulswilliams.auction.userinterface.SnipersTableModel.textFor;
 
 public class ApplicationRunner {
 

@@ -1,4 +1,7 @@
-package uk.me.paulswilliams.auction;
+package uk.me.paulswilliams.auction.userinterface;
+
+import uk.me.paulswilliams.auction.Announcer;
+import uk.me.paulswilliams.auction.UserRequestListener;
 
 import javax.swing.*;
 import java.awt.*;

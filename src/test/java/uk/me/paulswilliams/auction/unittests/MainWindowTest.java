@@ -2,8 +2,8 @@ package uk.me.paulswilliams.auction.unittests;
 
 import com.objogate.wl.swing.probe.ValueMatcherProbe;
 import org.junit.Test;
-import uk.me.paulswilliams.auction.MainWindow;
-import uk.me.paulswilliams.auction.SnipersTableModel;
+import uk.me.paulswilliams.auction.userinterface.MainWindow;
+import uk.me.paulswilliams.auction.userinterface.SnipersTableModel;
 import uk.me.paulswilliams.auction.UserRequestListener;
 import uk.me.paulswilliams.auction.supporting.AuctionSniperDriver;
 
