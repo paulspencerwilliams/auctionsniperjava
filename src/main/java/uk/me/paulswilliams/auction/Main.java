@@ -8,8 +8,6 @@ import uk.me.paulswilliams.auction.xmpp.XMPPAuctionHouse;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
     public static final String MAIN_WINDOW_NAME = "Auction Sniper Main";
@@ -19,7 +17,6 @@ public class Main {
 
     private final SnipersTableModel snipers = new SnipersTableModel();
     private MainWindow ui;
-    private List<Auction> notToBeGCd = new ArrayList<Auction>();
 
     public Main() throws Exception {
         startUserInterface();
@@ -45,16 +42,7 @@ public class Main {
 
 
     private void addUserRequestListenerFor(final XMPPAuctionHouse auctionHouse) {
-        ui.addUserRequestListener(new UserRequestListener() {
-            @Override
-            public void joinAuction(String itemId) {
-                snipers.addSniper(SniperSnapshot.joining(itemId));
-                Auction auction = auctionHouse.auctionFor(itemId);
-                notToBeGCd.add(auction);
-                auction.addAuctionEventListener(new AuctionSniper(itemId, auction, new SwingThreadSniperListener(snipers)));
-                auction.join();
-            }
-        });
+        ui.addUserRequestListener(new SniperLauncher(snipers, auctionHouse));
     }
 
     private void disconnectWhenUICloses(final XMPPAuctionHouse auctionHouse) {
@@ -69,4 +57,5 @@ public class Main {
             }
         });
     }
+
 }
