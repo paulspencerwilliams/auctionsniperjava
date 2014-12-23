@@ -1,4 +1,4 @@
-package uk.me.paulswilliams.auction.tests;
+package uk.me.paulswilliams.auction.supporting;
 
 
 import com.objogate.wl.swing.AWTEventQueueProber;

@@ -1,4 +1,4 @@
-package uk.me.paulswilliams.auction;
+package uk.me.paulswilliams.auction.supporting;
 
 import org.hamcrest.Matcher;
 import org.jivesoftware.smack.Chat;

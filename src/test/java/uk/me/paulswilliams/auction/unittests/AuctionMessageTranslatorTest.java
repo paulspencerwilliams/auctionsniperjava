@@ -1,4 +1,4 @@
-package uk.me.paulswilliams.auction.tests;
+package uk.me.paulswilliams.auction.unittests;
 
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.packet.Message;

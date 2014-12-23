@@ -1,4 +1,4 @@
-package uk.me.paulswilliams.auction.tests;
+package uk.me.paulswilliams.auction.unittests;
 
 import org.hamcrest.FeatureMatcher;
 import org.hamcrest.Matcher;

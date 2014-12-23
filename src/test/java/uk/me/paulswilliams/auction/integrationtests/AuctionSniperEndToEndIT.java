@@ -1,9 +1,10 @@
-package uk.me.paulswilliams.auction.tests;
+package uk.me.paulswilliams.auction.integrationtests;
 
 import org.jivesoftware.smack.SmackException;
 import org.junit.After;
 import org.junit.Test;
-import uk.me.paulswilliams.auction.FakeAuctionServer;
+import uk.me.paulswilliams.auction.supporting.FakeAuctionServer;
+import uk.me.paulswilliams.auction.supporting.ApplicationRunner;
 
 public class AuctionSniperEndToEndIT {
     private final FakeAuctionServer auction = new FakeAuctionServer("item-54321");
