@@ -31,7 +31,7 @@
       <groupId>com.googlecode.windowlicker</groupId>
       <artifactId>windowlicker-core</artifactId>
       <version>DEV</version>
-    </dependency>
+    </dependency> 
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-all</artifactId>

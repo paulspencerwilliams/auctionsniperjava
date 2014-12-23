@@ -1,19 +1,22 @@
 package uk.me.paulswilliams.auction;
 
 import org.hamcrest.Matcher;
-import org.jivesoftware.smack.*;
-import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.Chat;
+import org.jivesoftware.smack.ChatManager;
+import org.jivesoftware.smack.ChatManagerListener;
+import org.jivesoftware.smack.ConnectionConfiguration;
+import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.XMPPConnection;
+import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 
 import java.io.IOException;
 
 import static java.lang.String.format;
-import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static uk.me.paulswilliams.auction.Main.BID_COMMAND_FORMAT;
-import static uk.me.paulswilliams.auction.Main.JOIN_COMMAND_FORMAT;
+import static uk.me.paulswilliams.auction.XMPPAuction.BID_COMMAND_FORMAT;
+import static uk.me.paulswilliams.auction.XMPPAuction.JOIN_COMMAND_FORMAT;
 
 public class FakeAuctionServer {
     public static final String ITEM_ID_AS_LOGIN = "auction-%s";
