@@ -5,7 +5,7 @@ import org.junit.After;
 import org.junit.Test;
 import uk.me.paulswilliams.auction.FakeAuctionServer;
 
-public class AuctionSniperEndToEndTest {
+public class AuctionSniperEndToEndIT {
     private final FakeAuctionServer auction = new FakeAuctionServer("item-54321");
     private final FakeAuctionServer auction2 = new FakeAuctionServer("item-65432");
     private final ApplicationRunner application = new ApplicationRunner();
