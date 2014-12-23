@@ -2,6 +2,7 @@ package uk.me.paulswilliams.auction.unittests;
 
 import org.hamcrest.FeatureMatcher;
 import org.hamcrest.Matcher;
+import org.junit.Before;
 import org.junit.Test;
 import uk.me.paulswilliams.auction.*;
 
@@ -17,7 +18,12 @@ public class AuctionSniperTest {
     private static final String ITEM_ID = "54321";
     private SniperListener sniperListener = mock(SniperListener.class);
     private Auction auction = mock(Auction.class);
-    private AuctionSniper sniper = new AuctionSniper(ITEM_ID, auction, sniperListener);
+    private AuctionSniper sniper = new AuctionSniper(ITEM_ID, auction);
+
+    @Before
+    public void addSniperListener() {
+        sniper.addSniperListener(sniperListener);
+    }
 
     @Test
     public void reportsLostWhenAuctionClosesImmediately() {

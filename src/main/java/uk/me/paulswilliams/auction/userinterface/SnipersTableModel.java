@@ -1,6 +1,8 @@
 package uk.me.paulswilliams.auction.userinterface;
 
 import com.objogate.exception.Defect;
+import uk.me.paulswilliams.auction.AuctionSniper;
+import uk.me.paulswilliams.auction.SniperCollector;
 import uk.me.paulswilliams.auction.SniperListener;
 import uk.me.paulswilliams.auction.SniperSnapshot;
 import uk.me.paulswilliams.auction.SniperState;
@@ -9,11 +11,11 @@ import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SnipersTableModel extends AbstractTableModel implements SniperListener {
+public class SnipersTableModel extends AbstractTableModel implements SniperListener, SniperCollector {
 
-    private static final SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0, SniperState.JOINING);
     private static final String[] STATUS_TEXT = { "Joining", "Bidding", "Winning", "Lost", "Won"};
     private List<SniperSnapshot> snapshots = new ArrayList<SniperSnapshot>();
+    private List<AuctionSniper> notToBeGCd = new ArrayList<AuctionSniper>();
 
 
     @Override
@@ -48,8 +50,17 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
         return Column.at(column).name;
     }
 
-    public void addSniper(SniperSnapshot sniperSnapshot) {
-        snapshots.add(sniperSnapshot);
-        fireTableRowsInserted(0, 0);
+    @Override
+    public void addSniper(AuctionSniper sniper) {
+        notToBeGCd.add(sniper);
+        addSniperSnapshot(sniper.getSnapshot());
+        sniper.addSniperListener(new SwingThreadSniperListener(this));
     }
+
+    private void addSniperSnapshot(SniperSnapshot sniperSnapshot) {
+        snapshots.add(sniperSnapshot);
+        int row = snapshots.size() -1;
+        fireTableRowsInserted(row, row);
+    }
+
 }

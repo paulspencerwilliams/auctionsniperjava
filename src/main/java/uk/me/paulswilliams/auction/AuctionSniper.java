@@ -1,13 +1,14 @@
 package uk.me.paulswilliams.auction;
 
+import uk.me.paulswilliams.auction.userinterface.SwingThreadSniperListener;
+
 public class AuctionSniper implements AuctionEventListener {
-    private final SniperListener sniperListener;
     private final Auction auction;
     private SniperSnapshot snapshot;
+    private SniperListener listener;
 
-    public AuctionSniper(String itemId, Auction auction, SniperListener sniperListener) {
+    public AuctionSniper(String itemId, Auction auction) {
         this.auction = auction;
-        this.sniperListener = sniperListener;
         this.snapshot = SniperSnapshot.joining(itemId);
     }
 
@@ -32,6 +33,14 @@ public class AuctionSniper implements AuctionEventListener {
     }
 
     private void notifyChange() {
-        sniperListener.sniperStateChanged(snapshot);
+        listener.sniperStateChanged(snapshot);
+    }
+
+    public SniperSnapshot getSnapshot() {
+        return snapshot;
+    }
+
+    public void addSniperListener(SniperListener sniperListener) {
+        this.listener = sniperListener;
     }
 }
