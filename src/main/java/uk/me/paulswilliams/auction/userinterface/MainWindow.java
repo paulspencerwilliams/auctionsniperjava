@@ -1,6 +1,7 @@
 package uk.me.paulswilliams.auction.userinterface;
 
 import uk.me.paulswilliams.auction.Announcer;
+import uk.me.paulswilliams.auction.SniperPortfolio;
 import uk.me.paulswilliams.auction.UserRequestListener;
 
 import javax.swing.*;
@@ -17,12 +18,14 @@ public class MainWindow extends JFrame{
     public static final String APPLICATION_TITLE = "Auction Sniper";
     public static final String JOIN_BUTTON_NAME = "Join auction";
     public static final String NEW_ITEM_ID_NAME = "new item id";
-    private final SnipersTableModel snipers;
     private Announcer<UserRequestListener> userRequests = Announcer.to(UserRequestListener.class);
+    private SnipersTableModel snipers;
 
-    public MainWindow(SnipersTableModel snipers) {
+    public MainWindow(SniperPortfolio portfolio) {
         super("Auction Sniper");
-        this.snipers = snipers;
+        snipers = new SnipersTableModel();
+        portfolio.addPortfolioListener(snipers);
+
         setName(MAIN_WINDOW_NAME);
         fillContentPane(makeSnipersTable(), makeControls());
         pack();

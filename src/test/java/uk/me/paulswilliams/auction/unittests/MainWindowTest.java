@@ -2,6 +2,7 @@ package uk.me.paulswilliams.auction.unittests;
 
 import com.objogate.wl.swing.probe.ValueMatcherProbe;
 import org.junit.Test;
+import uk.me.paulswilliams.auction.SniperPortfolio;
 import uk.me.paulswilliams.auction.userinterface.MainWindow;
 import uk.me.paulswilliams.auction.userinterface.SnipersTableModel;
 import uk.me.paulswilliams.auction.UserRequestListener;
@@ -12,7 +13,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 public class MainWindowTest {
 
     private final SnipersTableModel tableModel = new SnipersTableModel();
-    private final MainWindow mainWindow = new MainWindow(tableModel);
+    private SniperPortfolio portfolio = new SniperPortfolio();
+    private final MainWindow mainWindow = new MainWindow(portfolio);
     private AuctionSniperDriver driver = new AuctionSniperDriver(100);
 
     @Test

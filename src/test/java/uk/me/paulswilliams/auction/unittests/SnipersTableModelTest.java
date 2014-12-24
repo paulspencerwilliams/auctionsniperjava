@@ -40,7 +40,7 @@ public class SnipersTableModelTest {
     public void setsSniperValuesInColumns(){
         SniperSnapshot bidding = sniper.getSnapshot().bidding(555, 666);
 
-        model.addSniper(sniper);
+        model.sniperAdded(sniper);
         model.sniperStateChanged(bidding);
 
         assertRowMatchesSnapshot(0, bidding);
@@ -49,7 +49,7 @@ public class SnipersTableModelTest {
 
     @Test
     public void notifiesListenersWhenAddingASniper() {
-        model.addSniper(sniper);
+        model.sniperAdded(sniper);
         verify(listener, times(1)).tableChanged(argThat(anInsertionAtRow(0)));
         assertThat(model.getRowCount(), equalTo(1));
         assertRowMatchesSnapshot(0, sniper.getSnapshot());
@@ -57,8 +57,8 @@ public class SnipersTableModelTest {
 
     @Test
     public void holdsSnipersInAdditionOrder() {
-        model.addSniper(new AuctionSniper("item 0", null));
-        model.addSniper(new AuctionSniper("item 1", null));
+        model.sniperAdded(new AuctionSniper("item 0", null));
+        model.sniperAdded(new AuctionSniper("item 1", null));
 
         assertEquals("item 0", cellValue(0, Column.ITEM_IDENTIFIER));
         assertEquals("item 1", cellValue(1, Column.ITEM_IDENTIFIER));
@@ -66,7 +66,7 @@ public class SnipersTableModelTest {
 
     @Test(expected = Defect.class)
     public void throwsDefectIfNoExistingSniperForAnUpdate() {
-        model.addSniper(sniper);
+        model.sniperAdded(sniper);
         model.sniperStateChanged(SniperSnapshot.joining("another item id"));
     }
 

@@ -2,7 +2,6 @@ package uk.me.paulswilliams.auction;
 
 import org.jivesoftware.smack.SmackException;
 import uk.me.paulswilliams.auction.userinterface.MainWindow;
-import uk.me.paulswilliams.auction.userinterface.SnipersTableModel;
 import uk.me.paulswilliams.auction.xmpp.XMPPAuctionHouse;
 
 import javax.swing.*;
@@ -15,11 +14,16 @@ public class Main {
     private static final int ARG_USERNAME = 1;
     private static final int ARG_PASSWORD = 2;
 
-    private final SnipersTableModel snipers = new SnipersTableModel();
     private MainWindow ui;
+    private SniperPortfolio portfolio = new SniperPortfolio();
 
     public Main() throws Exception {
-        startUserInterface();
+        SwingUtilities.invokeAndWait(new Runnable() {
+            @Override
+            public void run() {
+                ui = new MainWindow(portfolio);
+            }
+        });
     }
 
     public static void main(final String ... args) throws Exception {
@@ -30,19 +34,9 @@ public class Main {
         main.addUserRequestListenerFor(auctionHouse);
     }
 
-    private void startUserInterface() throws Exception {
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                ui = new MainWindow(snipers);
-            }
-        });
-    }
-
-
 
     private void addUserRequestListenerFor(final XMPPAuctionHouse auctionHouse) {
-        ui.addUserRequestListener(new SniperLauncher(snipers, auctionHouse));
+        ui.addUserRequestListener(new SniperLauncher(portfolio, auctionHouse));
     }
 
     private void disconnectWhenUICloses(final XMPPAuctionHouse auctionHouse) {
