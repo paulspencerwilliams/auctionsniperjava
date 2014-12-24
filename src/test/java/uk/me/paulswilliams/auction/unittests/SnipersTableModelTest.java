@@ -6,6 +6,7 @@ import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 import uk.me.paulswilliams.auction.AuctionSniper;
+import uk.me.paulswilliams.auction.Item;
 import uk.me.paulswilliams.auction.userinterface.Column;
 import uk.me.paulswilliams.auction.SniperSnapshot;
 import uk.me.paulswilliams.auction.userinterface.SnipersTableModel;
@@ -23,7 +24,7 @@ import static org.mockito.Mockito.*;
 public class SnipersTableModelTest {
 
     private TableModelListener listener = mock(TableModelListener.class);
-    private AuctionSniper sniper = new AuctionSniper("item id", null);
+    private AuctionSniper sniper = new AuctionSniper(new Item("item id", 567), null);
     private SnipersTableModel model = new SnipersTableModel();
 
     @Before
@@ -57,8 +58,8 @@ public class SnipersTableModelTest {
 
     @Test
     public void holdsSnipersInAdditionOrder() {
-        model.sniperAdded(new AuctionSniper("item 0", null));
-        model.sniperAdded(new AuctionSniper("item 1", null));
+        model.sniperAdded(new AuctionSniper(new Item("item 0", 567), null));
+        model.sniperAdded(new AuctionSniper(new Item("item 1", 567), null));
 
         assertEquals("item 0", cellValue(0, Column.ITEM_IDENTIFIER));
         assertEquals("item 1", cellValue(1, Column.ITEM_IDENTIFIER));

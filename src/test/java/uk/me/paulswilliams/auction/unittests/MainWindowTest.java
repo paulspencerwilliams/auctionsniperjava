@@ -2,6 +2,7 @@ package uk.me.paulswilliams.auction.unittests;
 
 import com.objogate.wl.swing.probe.ValueMatcherProbe;
 import org.junit.Test;
+import uk.me.paulswilliams.auction.Item;
 import uk.me.paulswilliams.auction.SniperPortfolio;
 import uk.me.paulswilliams.auction.userinterface.MainWindow;
 import uk.me.paulswilliams.auction.userinterface.SnipersTableModel;
@@ -19,17 +20,17 @@ public class MainWindowTest {
 
     @Test
     public void makesUserRequestWhenJoinButtonClicked() {
-        final ValueMatcherProbe<String> buttonProbe
-                = new ValueMatcherProbe<String>(equalTo("an item-id"), "join request");
+        final ValueMatcherProbe<Item> itemProbe
+                = new ValueMatcherProbe<Item>(equalTo(new Item("an item-id", 789)), "item request");
         mainWindow.addUserRequestListener(
                 new UserRequestListener() {
-                    public void joinAuction(String itemId) {
-                        buttonProbe.setReceivedValue(itemId);
+                    public void joinAuction(Item item) {
+                        itemProbe.setReceivedValue(item);
                     }
                 });
 
-        driver.startBiddingFor("an item-id");
-        driver.check(buttonProbe);
+        driver.startBiddingFor("an item-id", 789 );
+        driver.check(itemProbe);
     }
 
 }

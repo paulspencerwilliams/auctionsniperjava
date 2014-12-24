@@ -6,6 +6,9 @@ import org.junit.Test;
 import uk.me.paulswilliams.auction.supporting.FakeAuctionServer;
 import uk.me.paulswilliams.auction.supporting.ApplicationRunner;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 public class AuctionSniperEndToEndIT {
     private final FakeAuctionServer auction = new FakeAuctionServer("item-54321");
     private final FakeAuctionServer auction2 = new FakeAuctionServer("item-65432");
@@ -81,6 +84,27 @@ public class AuctionSniperEndToEndIT {
 
         application.showsSniperHasWonAuction(auction, 1098);
         application.showsSniperHasWonAuction(auction2, 521);
+    }
+
+    @Test
+    public void sniperLosesAnAuctionWhenThePriceIsTooHigh() throws Exception {
+        auction.startSellingItem();
+
+        application.startBiddingWithStopPrice(auction, 1100);
+        auction.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID);
+
+        auction.reportPrice(1000, 98, "other bidder");
+        application.hasShownSniperIsBidding(auction, 1000, 1098);
+        auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);
+
+        auction.reportPrice(1197, 10, "third party");
+        application.hasShownSniperIsLosing(auction, 1197, 1098);
+
+        auction.reportPrice(1207, 10, "forth party");
+        application.hasShownSniperIsLosing(auction, 1207, 1098);
+
+        auction.annouceClosed();
+        application.showsSniperHasLostAuction(auction, 1207, 1098);
     }
 
     @After

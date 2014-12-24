@@ -1,6 +1,5 @@
 package uk.me.paulswilliams.auction;
 
-import uk.me.paulswilliams.auction.userinterface.SwingThreadSniperListener;
 import uk.me.paulswilliams.auction.xmpp.XMPPAuctionHouse;
 
 public class SniperLauncher implements UserRequestListener {
@@ -13,9 +12,9 @@ public class SniperLauncher implements UserRequestListener {
     }
 
     @Override
-    public void joinAuction(String itemId) {
-        Auction auction = auctionHouse.auctionFor(itemId);
-        AuctionSniper sniper = new AuctionSniper(itemId, auction);
+    public void joinAuction(Item item) {
+        Auction auction = auctionHouse.auctionFor(item);
+        AuctionSniper sniper = new AuctionSniper(item, auction);
         auction.addAuctionEventListener(sniper);
         collector.addSniper(sniper);
         auction.join();

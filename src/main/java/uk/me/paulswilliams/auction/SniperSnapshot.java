@@ -68,4 +68,8 @@ public class SniperSnapshot {
     public boolean isForSameAs(SniperSnapshot sniperSnapshot) {
         return itemId.equals(sniperSnapshot.itemId);
     }
+
+    public SniperSnapshot losing(int newLastPrice) {
+        return new SniperSnapshot(itemId, newLastPrice, lastBid, SniperState.LOSING);
+    }
 }

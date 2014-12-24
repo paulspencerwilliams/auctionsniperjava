@@ -1,6 +1,7 @@
 package uk.me.paulswilliams.auction.supporting;
 
 import uk.me.paulswilliams.auction.Main;
+import uk.me.paulswilliams.auction.SniperState;
 import uk.me.paulswilliams.auction.userinterface.MainWindow;
 
 import static java.lang.String.format;
@@ -19,10 +20,19 @@ public class ApplicationRunner {
     public void startBiddingIn(final FakeAuctionServer... auctions) {
         startSniper();
         for (FakeAuctionServer auction: auctions) {
-            final String itemId = auction.getItemId();
-            driver.startBiddingFor(itemId);
-            driver.showsSniperStatus(itemId, 0, 0, textFor(JOINING));
+            bidForItem(auction, Integer.MAX_VALUE);
         }
+    }
+
+    private void bidForItem(FakeAuctionServer auction, int stopPrice) {
+        final String itemId = auction.getItemId();
+        driver.startBiddingFor(itemId, stopPrice);
+        driver.showsSniperStatus(itemId, 0, 0, textFor(JOINING));
+    }
+
+    public void startBiddingWithStopPrice(FakeAuctionServer auction, int stopPrice) {
+        startSniper();
+        bidForItem(auction, stopPrice);
     }
 
     private void startSniper() {
@@ -62,4 +72,8 @@ public class ApplicationRunner {
 
     public void showsSniperHasWonAuction(FakeAuctionServer auction, int lastPrice) {
         driver.showsSniperStatus(auction.getItemId(), lastPrice, lastPrice, textFor(WON)); }
+
+    public void hasShownSniperIsLosing(FakeAuctionServer auction, int lastPrice, int lastBid) {
+        driver.showsSniperStatus(auction.getItemId(), lastPrice, lastBid, textFor(SniperState.LOSING));
+    }
 }

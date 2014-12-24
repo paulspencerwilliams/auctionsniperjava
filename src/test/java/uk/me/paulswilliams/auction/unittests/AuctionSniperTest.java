@@ -3,22 +3,27 @@ package uk.me.paulswilliams.auction.unittests;
 import org.hamcrest.FeatureMatcher;
 import org.hamcrest.Matcher;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-import uk.me.paulswilliams.auction.*;
+import uk.me.paulswilliams.auction.Auction;
+import uk.me.paulswilliams.auction.AuctionSniper;
+import uk.me.paulswilliams.auction.Item;
+import uk.me.paulswilliams.auction.SniperListener;
+import uk.me.paulswilliams.auction.SniperSnapshot;
+import uk.me.paulswilliams.auction.SniperState;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.mockito.Mockito.*;
 import static uk.me.paulswilliams.auction.AuctionEventListener.PriceSource.FromOtherBidder;
 import static uk.me.paulswilliams.auction.AuctionEventListener.PriceSource.FromSniper;
-import static uk.me.paulswilliams.auction.SniperState.LOST;
-import static uk.me.paulswilliams.auction.SniperState.WINNING;
-import static uk.me.paulswilliams.auction.SniperState.WON;
+import static uk.me.paulswilliams.auction.SniperState.*;
 
 public class AuctionSniperTest {
     private static final String ITEM_ID = "54321";
     private SniperListener sniperListener = mock(SniperListener.class);
     private Auction auction = mock(Auction.class);
-    private AuctionSniper sniper = new AuctionSniper(ITEM_ID, auction);
+    private Item item = new Item(ITEM_ID, 567);
+    private AuctionSniper sniper = new AuctionSniper(item, auction);
 
     @Before
     public void addSniperListener() {
@@ -32,6 +37,7 @@ public class AuctionSniperTest {
     }
 
     @Test
+    @Ignore
     public void bidsHigherAndReportsBiddingWhenNewPriceArrives() {
         final int price = 1001;
         final int increment = 25;

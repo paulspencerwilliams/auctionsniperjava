@@ -17,6 +17,8 @@ import javax.swing.table.JTableHeader;
 import static com.objogate.wl.swing.matcher.IterableComponentsMatcher.matching;
 import static com.objogate.wl.swing.matcher.JLabelTextMatcher.withLabelText;
 import static java.lang.String.valueOf;
+import static uk.me.paulswilliams.auction.userinterface.MainWindow.NEW_ITEM_ID_NAME;
+import static uk.me.paulswilliams.auction.userinterface.MainWindow.NEW_ITEM_STOP_PRICE_NAME;
 
 public class AuctionSniperDriver extends JFrameDriver{
     public AuctionSniperDriver(int timeoutMillis) {
@@ -41,9 +43,9 @@ public class AuctionSniperDriver extends JFrameDriver{
                 withLabelText("State")));
     }
 
-    public void startBiddingFor(String itemId) {
-        itemIdField().replaceAllText("");
-        itemIdField().replaceAllText(itemId);
+    public void startBiddingFor(String itemId, int stopPrice) {
+        textField(NEW_ITEM_ID_NAME).replaceAllText(itemId);
+        textField(NEW_ITEM_STOP_PRICE_NAME).replaceAllText(String.valueOf(stopPrice));
         bidButton().click();
     }
 
@@ -51,8 +53,8 @@ public class AuctionSniperDriver extends JFrameDriver{
         return new JButtonDriver(this, JButton.class, named(MainWindow.JOIN_BUTTON_NAME));
     }
 
-    private JTextFieldDriver itemIdField() {
-        JTextFieldDriver newItemId = new JTextFieldDriver(this, JTextField.class, named(MainWindow.NEW_ITEM_ID_NAME));
+    private JTextFieldDriver textField(String itemName) {
+        JTextFieldDriver newItemId = new JTextFieldDriver(this, JTextField.class, named(itemName));
         newItemId.focusWithMouse();
         return newItemId;
     }

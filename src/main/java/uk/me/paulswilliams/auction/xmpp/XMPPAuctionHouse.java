@@ -7,6 +7,7 @@ import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import uk.me.paulswilliams.auction.Auction;
 import uk.me.paulswilliams.auction.AuctionHouse;
+import uk.me.paulswilliams.auction.Item;
 
 import java.io.IOException;
 
@@ -35,8 +36,8 @@ public class XMPPAuctionHouse implements AuctionHouse {
     }
 
     @Override
-    public Auction auctionFor(String itemId) {
-        return new XMPPAuction(connection, auctionId(itemId, connection));
+    public Auction auctionFor(Item item) {
+        return new XMPPAuction(connection, auctionId(item.identifier, connection));
     }
 
     public void disconnect() throws SmackException.NotConnectedException {

@@ -1,13 +1,16 @@
 package uk.me.paulswilliams.auction.userinterface;
 
 import uk.me.paulswilliams.auction.Announcer;
+import uk.me.paulswilliams.auction.Item;
 import uk.me.paulswilliams.auction.SniperPortfolio;
 import uk.me.paulswilliams.auction.UserRequestListener;
 
 import javax.swing.*;
+import javax.swing.text.NumberFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
 
 import static uk.me.paulswilliams.auction.Main.MAIN_WINDOW_NAME;
 
@@ -18,6 +21,7 @@ public class MainWindow extends JFrame{
     public static final String APPLICATION_TITLE = "Auction Sniper";
     public static final String JOIN_BUTTON_NAME = "Join auction";
     public static final String NEW_ITEM_ID_NAME = "new item id";
+    public static final String NEW_ITEM_STOP_PRICE_NAME = "stop price";
     private Announcer<UserRequestListener> userRequests = Announcer.to(UserRequestListener.class);
     private SnipersTableModel snipers;
 
@@ -35,17 +39,31 @@ public class MainWindow extends JFrame{
 
     private JPanel makeControls() {
         JPanel controls = new JPanel(new FlowLayout());
+
         final JTextField itemIdField = new JTextField();
         itemIdField.setColumns(25);
         itemIdField.setName(NEW_ITEM_ID_NAME);
         controls.add(itemIdField);
+
+        final JFormattedTextField stopPriceField = new JFormattedTextField(NumberFormat.getNumberInstance());
+        stopPriceField.setColumns(7);
+        stopPriceField.setName(NEW_ITEM_STOP_PRICE_NAME);
+        controls.add(stopPriceField);
 
         JButton joinAuctionButton = new JButton("Join Auction");
         joinAuctionButton.setName(JOIN_BUTTON_NAME);
         joinAuctionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                userRequests.announce().joinAuction(itemIdField.getText());
+                userRequests.announce().joinAuction(new Item(itemId(), stopPrice()));
+            }
+
+            private int stopPrice() {
+                return ((Number)stopPriceField.getValue()).intValue();
+            }
+
+            private String itemId() {
+                return itemIdField.getText();
             }
         });
         controls.add(joinAuctionButton);
