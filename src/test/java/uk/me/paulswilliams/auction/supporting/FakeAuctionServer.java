@@ -87,4 +87,7 @@ public class FakeAuctionServer {
     }
 
 
+    public void sendInvalidMessageContaining(String message) throws XMPPException, SmackException.NotConnectedException {
+        currentChat.sendMessage(message);
+    }
 }

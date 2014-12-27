@@ -3,11 +3,8 @@ package uk.me.paulswilliams.auction.integrationtests;
 import org.jivesoftware.smack.SmackException;
 import org.junit.After;
 import org.junit.Test;
-import uk.me.paulswilliams.auction.supporting.FakeAuctionServer;
 import uk.me.paulswilliams.auction.supporting.ApplicationRunner;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
+import uk.me.paulswilliams.auction.supporting.FakeAuctionServer;
 
 public class AuctionSniperEndToEndIT {
     private final FakeAuctionServer auction = new FakeAuctionServer("item-54321");
@@ -107,9 +104,38 @@ public class AuctionSniperEndToEndIT {
         application.showsSniperHasLostAuction(auction, 1207, 1098);
     }
 
+    @Test
+    public void sniperReportsInvalidAuctionMessageAndStopsRespondingToEvents() throws Exception{
+        String brokenMessage = "a broken message";
+        auction.startSellingItem();
+        auction2.startSellingItem();
+
+        application.startBiddingIn(auction, auction2);
+        auction.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID);
+
+        auction.reportPrice(500, 20, "other bidder");
+        auction.hasReceivedBid(520, ApplicationRunner.SNIPER_XMPP_ID);
+
+        auction.sendInvalidMessageContaining(brokenMessage);
+        application.showsSniperHasFailed(auction);
+
+        auction.reportPrice(520, 21, "other bidder");
+        waitForAnotherAuctionEvent();
+
+        application.reportsInvalidMessage(auction, brokenMessage);
+        application.showsSniperHasFailed(auction);
+    }
+
+    private void waitForAnotherAuctionEvent() throws Exception {
+        auction2.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID);
+        auction2.reportPrice(600, 6, "other bidder");
+        application.hasShownSniperIsBidding(auction2, 600, 606);
+    }
+
     @After
     public void stopAuction() throws SmackException.NotConnectedException {
         auction.stop();
+        auction2.stop();
     }
 
     @After
