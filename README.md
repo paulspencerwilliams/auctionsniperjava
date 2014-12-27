@@ -42,7 +42,7 @@ And select a password
 
 ## And run the tests!!
 
-    mvn test
+    mvn integration-test
 
 # Cleanup
 
@@ -88,3 +88,8 @@ Refactoring not done in a way to allow too many small commits.
 ## Avoid primative obsession
 
 Including use of generics on collections where type is a duplication smell.
+
+## Actually right the unit tests!
+
+Remember that AuctionSniper bug when you were being lazy?
+
