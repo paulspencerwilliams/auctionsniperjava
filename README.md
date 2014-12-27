@@ -93,3 +93,5 @@ Including use of generics on collections where type is a duplication smell.
 
 Remember that AuctionSniper bug when you were being lazy?
 
+
+## TDD a feature with just one field, and then expand
