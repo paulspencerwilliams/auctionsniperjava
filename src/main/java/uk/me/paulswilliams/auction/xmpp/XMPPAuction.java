@@ -12,11 +12,13 @@ import uk.me.paulswilliams.auction.AuctionEventListener;
 public final class XMPPAuction implements Auction {
     public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: Join;";
     public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: Bid; Price: %d;";
+    private final XMPPFailureReporter failureReporter;
 
     Announcer<AuctionEventListener> auctionEventListeners = Announcer.to(AuctionEventListener.class);
     private final Chat chat;
 
-    public XMPPAuction(XMPPConnection connection, String itemId) {
+    public XMPPAuction(XMPPConnection connection, String itemId, XMPPFailureReporter failureReporter) {
+        this.failureReporter = failureReporter;
         AuctionMessageTranslator translator = translatorFor(connection);
         chat = ChatManager.getInstanceFor(connection).createChat(
                 itemId, null);
@@ -46,8 +48,9 @@ public final class XMPPAuction implements Auction {
     private AuctionMessageTranslator translatorFor(XMPPConnection connection) {
         return new AuctionMessageTranslator(
                 connection.getUser(),
-                auctionEventListeners.announce());
+                auctionEventListeners.announce(), failureReporter);
     }
+
 
     @Override
     public void bid(int amount) {
