@@ -95,3 +95,5 @@ Remember that AuctionSniper bug when you were being lazy?
 
 
 ## TDD a feature with just one field, and then expand
+
+## Extract a logging class, and test it's invoked!
