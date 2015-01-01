@@ -97,3 +97,7 @@ Remember that AuctionSniper bug when you were being lazy?
 ## TDD a feature with just one field, and then expand
 
 ## Extract a logging class, and test it's invoked!
+
+## Struggling to remember a use case for states
+
+but I'd like to learn more, seem a useful tool to keep in the bag
