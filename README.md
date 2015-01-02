@@ -1,43 +1,46 @@
-# Original intention
+Growing Object Oriented Software, Guided by Tests (GOOS) is a well known and respected book focusing on the design feedback provided by Test Driving software development. As discussed at [insert link], this is my first attempt at the comprehensive worked example - the Auction Sniper. Whilst the final solution is of interest, perhaps of even more value is reviewing the commit history to see how I journey from an initial failing end to end test to a working solution which communicates to remote servers, presents a Swing UI and does so with low coupling / high cohension.  
 
-# This Java attempt
 
 # Installation
 
+This, my solution to the Auction Sniper worked example primarily consists of a Java source tree, with dependency and build implemnted using idiomatic Maven. The test and integration-test phases cover the unit testing, and end to end testing requirements of the worked example.  
+
+The Auction Sniper solution requires an XMPP server, so I've bundled a Vines instance in the poorly named vagrant submodule, as a Docker container to simplify deployment, and enable Continous Integration on CircleCi
+
+
 ## Prerequisites
-    You'll need Java 7, Maven and Docker
+
+* Java 7
+* Maven
+* Docker
 
 ## Clone the repo and submodules
     git clone git@github.com:paulspencerwilliams/auctionsniperjava.git
     git submodule update --init
 
 ## Build and run Vines XMPP server using Docker
-Build the docker image by
+Build the Vines XMPP server Docker image by
 
     docker build -t 'paulswilliams/vines' vagrant/
     
-and wait, and wait, and wait
-
-Once complete, run the docker image
+Once complete, run the Docker image
 
     docker run -p 5222:5222 -t 'paulswilliams/vines'
 
-On a Mac with Boot2Docker, create an ssh tunnel
+If deploying on a Mac with Boot2Docker, create an ssh tunnel to enable native to Docker VM communication. 
 
     boot2docker ssh -L 5222:localhost:5222
 
 ## Obtain certificate from Vines into Java keystore
-Get container id using 
 
-    docker ps | grep paulswilliams
+To enable the Smack XMPP client to communicate with Vines, it is essential to download, and register the Vines TLS certificate with the Auction Sniper code:
 
-Retreive certificate from Docker
+    docker cp `docker ps | grep paulswilliams/vines | awk '{print $1;}'`:/localhost/conf/certs/localhost.crt certificates/
 
-    docker cp {container id}:/localhost/conf/certs/localhost.crt certificates/ 
-
-Import certificate
+Import certificate into expected local keystore
 
     keytool -import -alias localhost -file certificates/localhost.crt  -keystore certificates/akeystore.jks 
+
 And select a password
 
 ## And run the tests!!
@@ -46,8 +49,17 @@ And select a password
 
 # Cleanup
 
-## Delete Docker images
-...
+To remove the worked example from your machine, stop and delete the Vines Docker container, and then delete the git clone. 
+
+## Stop and Delete the Vines Docker container 
+
+Stop the Docker container
+
+    docker stop `docker ps | grep paulswilliams/vines | awk '{print $1;}'`
+
+Delete the Docker container
+
+    docker rmi 'paulswilliams/vines' 
 
 # Challenges
 
@@ -59,6 +71,8 @@ And select a password
 ### Mockito not strict mock...
 
 # Key lessons
+ 
+## anonymous classes are okay in the short term. Keep them inline until you understand sufficiently to refactor them out - remember the inline before refactor technique?
 
 ## Learning is key, not the code. That's why I deleted it all!!
 
