@@ -114,4 +114,6 @@ Remember that AuctionSniper bug when you were being lazy?
 
 ## Struggling to remember a use case for states
 
+## Nat advised no longer using WindowLicker
+
 but I'd like to learn more, seem a useful tool to keep in the bag
