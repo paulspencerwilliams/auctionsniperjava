@@ -10,9 +10,9 @@ The Auction Sniper solution requires an XMPP server, so I've bundled a Vines ins
 
 ## Prerequisites
 
-* Java 7
-* Maven
-* Docker
+* [Java 7 / 8 JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [Maven](http://maven.apache.org/download.cgi) or on [OS X](http://stackoverflow.com/questions/8826881/maven-install-on-mac-os-x) ensuring it uses correct JDK
+* [Docker](https://www.docker.com) or [via homebrew on OS X](http://penandpants.com/2014/03/09/docker-via-homebrew/)
 
 ## Clone the repo and submodules
     git clone git@github.com:paulspencerwilliams/auctionsniperjava.git
@@ -27,7 +27,7 @@ Once complete, run the Docker image
 
     docker run -p 5222:5222 -t 'paulswilliams/vines'
 
-If deploying on a Mac with Boot2Docker, create an ssh tunnel to enable native to Docker VM communication. 
+If deploying on a Mac with Boot2Docker, in a seperate terminal window, create an ssh tunnel to enable native to Docker VM communication  
 
     boot2docker ssh -L 5222:localhost:5222
 
